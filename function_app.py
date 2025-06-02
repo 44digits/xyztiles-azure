@@ -15,6 +15,7 @@ import azure.storage.blob
 import rasterio
 import azurexyztiles
 
+XYZ_URL_PATTERN = "{baseurl}/{directory}/{{z}}/{{x}}/{{y}}.PNG"
 
 app = func.FunctionApp()
 
@@ -54,6 +55,7 @@ def xyztiles_generate(
         map_storage_connection = os.environ['MapStorage']
         raw_image_container = os.environ['RawContainer']
         tile_container = os.environ['WebContainer']
+        baseurl = os.environ['WebBaseURL']
 
         image_blobservice = azure.storage.blob.BlobServiceClient.from_connection_string(
                 map_storage_connection)
@@ -67,9 +69,13 @@ def xyztiles_generate(
                 resampling="bilinear")
         tiles.write(image_blobservice, tile_container, tiledirectory)
 
-        logging.info(f'Image directory: {tiledirectory}')
+        xyz_url = XYZ_URL_PATTERN.format(
+                baseurl = baseurl,
+                directory = tiledirectory)
+        logging.info(f'XYZ tile url: {xyz_url}')
+
         return func.HttpResponse(
-                f'Image directory: {tiledirectory}',
+                f'XYZ tile url: {xyz_url}',
                 status_code=200)
 
     logging.info(f'ERROR: missing parameter: {imagepath} {zoomstart} {zoomend}')
