@@ -16,7 +16,6 @@ Date: 2025 Jun 01
 """
 
 
-import datetime
 import io
 import json
 import logging
@@ -28,6 +27,7 @@ import rasterio
 
 import azurexyztiles
 
+
 # pattern of XYX url used by gis apps
 XYZ_URL_PATTERN = "{baseurl}/{directory}/{{z}}/{{x}}/{{y}}.PNG"
 
@@ -35,7 +35,7 @@ app = func.FunctionApp()
 
 def getimage(
         image_blobservice: azure.storage.blob.BlobServiceClient,
-        container: str, 
+        container: str,
         path: str) -> rasterio.io.DatasetReader:
     '''getimage
         pull the given image from Azure storage and return rasterio object
@@ -94,7 +94,7 @@ def xyztiles_generate(
     imagepath = req.params.get('imagepath')
     zoomstart = req.params.get('zoomstart')
     zoomend = req.params.get('zoomend')
-    logging.info(f'XYZtiles started: {imagepath} {zoomstart} {zoomend}')
+    logging.info('XYZtiles started: %s %d %d', imagepath, zoomstart, zoomend)
 
     if imagepath and zoomstart and zoomend:
         zoomstart = int(zoomstart)
@@ -110,16 +110,16 @@ def xyztiles_generate(
         tiledirectory = imagepath + '-tiles'
         img = getimage(image_blobservice, raw_image_container, imagepath)
         tiles = azurexyztiles.AzureXYZtiles(
-                image=img, 
-                zooms=range(zoomstart, zoomend), 
-                pixels=512, 
+                image=img,
+                zooms=range(zoomstart, zoomend),
+                pixels=512,
                 resampling="bilinear")
         tiles.write(image_blobservice, tile_container, tiledirectory)
 
         xyz_url = XYZ_URL_PATTERN.format(
                 baseurl = baseurl,
                 directory = tiledirectory)
-        logging.info(f'XYZ tile url: {xyz_url}')
+        logging.info('XYZ tile url: %s', xyz_url)
 
         response = {
                 'status': True,
@@ -129,7 +129,8 @@ def xyztiles_generate(
                 mimetype = 'application/json',
                 status_code=200)
 
-    logging.info(f'ERROR: missing parameter: {imagepath} {zoomstart} {zoomend}')
+    logging.info('ERROR: missing parameter: %s %s %s',
+            imagepath, str(zoomstart), str(zoomend))
     response = {
             'status': False,
             'message': 'ERROR: missing parameters',
