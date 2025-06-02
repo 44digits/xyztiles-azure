@@ -94,7 +94,8 @@ def xyztiles_generate(
     imagepath = req.params.get('imagepath')
     zoomstart = req.params.get('zoomstart')
     zoomend = req.params.get('zoomend')
-    logging.info('XYZtiles started: %s %d %d', imagepath, zoomstart, zoomend)
+    logging.info('XYZtiles started: %s %s %s', 
+            imagepath, str(zoomstart), str(zoomend))
 
     if imagepath and zoomstart and zoomend:
         zoomstart = int(zoomstart)
