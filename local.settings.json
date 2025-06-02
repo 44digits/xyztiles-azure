@@ -6,6 +6,7 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "MapStorage": "<STORAGE ACCOUNT ACCESS KEY>",
     "RawContainer": "raw-images",
-    "WebContainer": "$web"
+    "WebContainer": "$web",
+    "WebBaseURL": "<PRIMARY ENDPOINT URL OF STATIC WEB SERVER>"
   }
 }
