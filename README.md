@@ -6,8 +6,8 @@ that can be used in a GIS application such as QGIS.
 Note this app is bound to a HTTP event and therefore acts as a REST endpoint with query parameters.
 
 ### Prerequisites
-- Azure functions core tools: https://github.com/Azure/azure-functions-core-tools/tree/v4.x
 - Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+- Azure functions core tools: https://github.com/Azure/azure-functions-core-tools/tree/v4.x
 - Azurite storage emulator (for local development) https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite
 
 ### Installation
