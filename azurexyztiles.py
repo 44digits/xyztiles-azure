@@ -2,10 +2,9 @@
 AzureXYZtiles class based on rasterioxyz tiles
     https://github.com/duncanmartyn/rasterioxyz
 
-Overloads write method to upload to Azure storage
+Overloads write() method to upload to Azure storage
 
 Date: 2025 Jun 01
-Author: Andrew
 """
 
 import pathlib
@@ -16,13 +15,23 @@ import azure.storage.blob
 
 
 class AzureXYZtiles(rasterioxyz.Tiles):
-    '''base class on existing rasterioxyz library
+    '''subclass of rasterioxyz.Tiles class
+        used to overload write() method for Azure
     '''
     def write(self,
-            image_blobservice: azure.storage.blob.BlobServiceClient,
+            output_blobservice: azure.storage.blob.BlobServiceClient,
             container: str,
-            directoryname: str):
-        '''override write method to write to azure
+            directoryname: str) -> None:
+        '''Write XYZ tiles to Azure storage
+
+        Parameters
+        ----------
+        output_blobservice:
+            Azure blob service client object
+        container:
+            Name of storage container
+        directoryname:
+            Name of directory to create within storage container
         '''
 
         driver = "PNG"
