@@ -11,7 +11,7 @@ Note this app is bound to a HTTP event and therefore acts as a REST endpoint wit
 - Azurite storage emulator (for local development) https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite
 
 ### Installation
-Note these instructions are for linux.  
+Note these instructions were created in linux.  (Todo: test in Powershell)
 
 1. If using Azure CLI for the first time sign in to Azure:  
    `az login`
