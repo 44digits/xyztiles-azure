@@ -1,6 +1,17 @@
 """
 XYZtiles
-Azure function to create XYZ tiles for a given GeoTiff image.
+Azure function to generate XYZ tiles from a GeoTiff image
+
+Name of GeoTiff image is passes as a query parameter on the URL
+along with the zoom levels.  The Azure connection details, and names
+of containers are stored as AppSettings.
+
+TODO:
+    Convert from HTTP binding to ServiceBus binding
+    Include parameters for projection, transformation, etc
+        so does not have to be stored in GeoTiff header
+    Improve memory allocation
+
 Date: 2025 Jun 01
 """
 
@@ -16,6 +27,7 @@ import azure.storage.blob
 import rasterio
 import azurexyztiles
 
+# pattern of XYX url used by gis apps
 XYZ_URL_PATTERN = "{baseurl}/{directory}/{{z}}/{{x}}/{{y}}.PNG"
 
 app = func.FunctionApp()
@@ -25,7 +37,16 @@ def getimage(
         container: str, 
         path: str) -> rasterio.io.DatasetReader:
     '''getimage
-        pull the given image from Azure storage and create rasterio object
+        pull the given image from Azure storage and return rasterio object
+
+        Parameters
+        ----------
+        image_blobservice:
+            Azure blob service client object
+        container:
+            Name of storage container
+        path:
+            Name and path to GeoTiff within container
     '''
     imagebytes = io.BytesIO()
 
@@ -44,6 +65,30 @@ def getimage(
         auth_level=func.AuthLevel.ANONYMOUS)
 def xyztiles_generate(
         req: func.HttpRequest) -> func.HttpResponse:
+    '''XYZtiles: Azure function to generate XYZ tiles from a GeoTiff image
+
+    Both GeoTiff source image and output tiles are stored in Azure storage.
+    The output container is assumed to be configured as a static web site.
+
+    URL Query Parameters
+    --------------------
+    imagepath:
+        path to source image within container
+    zoomstart, zoomend:
+        start and stop zoom levels for tiles
+
+    App Settings
+    ------------
+    MapStorage
+        Azure storage connection string
+    RawContainer
+        Name of container used for image uploads
+    WebContainer
+        Container used for tile storage.
+        Usually called $web if configured as a static web site
+    WebBaseURL
+        Primate endpoint of static web site starting with https://
+    '''
 
     imagepath = req.params.get('imagepath')
     zoomstart = req.params.get('zoomstart')

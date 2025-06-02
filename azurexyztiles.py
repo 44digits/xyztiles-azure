@@ -24,14 +24,14 @@ class AzureXYZtiles(rasterioxyz.Tiles):
             directoryname: str) -> None:
         '''Write XYZ tiles to Azure storage
 
-        Parameters
-        ----------
-        output_blobservice:
-            Azure blob service client object
-        container:
-            Name of storage container
-        directoryname:
-            Name of directory to create within storage container
+            Parameters
+            ----------
+            output_blobservice:
+                Azure blob service client object
+            container:
+                Name of storage container
+            directoryname:
+                Name of directory to create within storage container
         '''
 
         driver = "PNG"
