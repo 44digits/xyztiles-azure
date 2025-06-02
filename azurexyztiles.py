@@ -53,7 +53,7 @@ class AzureXYZtiles(rasterioxyz.Tiles):
                 ) as dst:
                     dst.write(tile.data)
 
-                blob_client = image_blobservice.get_blob_client(
+                blob_client = output_blobservice.get_blob_client(
                         container=container,
                         blob= str(img_path))
                 blob_client.upload_blob(memfile)
