@@ -18,8 +18,6 @@ import azurexyztiles
 
 app = func.FunctionApp()
 
-STATICWEBCONTAINER = '$web'
-
 def getimage(
         image_blobservice: azure.storage.blob.BlobServiceClient,
         container: str, 
@@ -48,20 +46,26 @@ def xyztiles_generate(
     imagepath = req.params.get('imagepath')
     zoomstart = req.params.get('zoomstart')
     zoomend = req.params.get('zoomend')
-    logging.info(f'HTTP trigger :{imagepath}')
+    logging.info(f'XYZtiles started: {imagepath} {zoomstart} {zoomend}')
 
     if imagepath and zoomstart and zoomend:
+        zoomstart = int(zoomstart)
+        zoomend = int(zoomend)
+        map_storage_connection = os.environ['MapStorage']
+        raw_image_container = os.environ['RawContainer']
+        tile_container = os.environ['WebContainer']
+
         image_blobservice = azure.storage.blob.BlobServiceClient.from_connection_string(
-                os.environ['TileContainer'])
+                map_storage_connection)
 
         tiledirectory = imagepath + '-tiles'
-        img = getimage(image_blobservice, 'raw-images', imagepath)
+        img = getimage(image_blobservice, raw_image_container, imagepath)
         tiles = azurexyztiles.AzureXYZtiles(
                 image=img, 
-                zooms=range(16), 
+                zooms=range(zoomstart, zoomend), 
                 pixels=512, 
                 resampling="bilinear")
-        tiles.write(image_blobservice, STATICWEBCONTAINER, tiledirectory)
+        tiles.write(image_blobservice, tile_container, tiledirectory)
 
         logging.info(f'Image directory: {tiledirectory}')
         return func.HttpResponse(
