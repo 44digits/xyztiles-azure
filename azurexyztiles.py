@@ -7,6 +7,8 @@ Overloads write() method to upload to Azure storage
 Date: 2025 Jun 01
 """
 
+# pylint: disable=arguments-differ,too-few-public-methods
+
 import pathlib
 import rasterio.io
 import numpy
