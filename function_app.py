@@ -9,6 +9,7 @@ import datetime
 import logging
 import os
 import io
+import json
 
 import azure.functions as func
 import azure.storage.blob
@@ -74,11 +75,23 @@ def xyztiles_generate(
                 directory = tiledirectory)
         logging.info(f'XYZ tile url: {xyz_url}')
 
+        response = {
+                'status': True,
+                'xyz_tile_url': xyz_url}
         return func.HttpResponse(
-                f'XYZ tile url: {xyz_url}',
+                json.dumps(response),
+                mimetype = 'application/json',
                 status_code=200)
 
     logging.info(f'ERROR: missing parameter: {imagepath} {zoomstart} {zoomend}')
+    response = {
+            'status': False,
+            'message': 'ERROR: missing parameters',
+            'parameters': {
+                'imagepath': imagepath,
+                'zoomstart': zoomstart,
+                'zoomend': zoomend }}
     return func.HttpResponse(
-            f'ERROR: missing parameter: {imagepath} {zoomstart} {zoomend}',
+            json.dumps(response),
+            mimetype = 'application/json',
             status_code=400)
