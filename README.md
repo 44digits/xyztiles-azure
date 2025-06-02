@@ -13,6 +13,8 @@ Note this app is bound to a HTTP event and therefore acts as a REST endpoint wit
 ### Installation
 Note these instructions are for linux.  
 
+1. If using Azure CLI for the first time sign in to Azure:  
+   `az login`
 1. Clone github repository:  
    `git clone https://github.com/44digits/xyztiles-azure.git`
 1. Move into repo:  
