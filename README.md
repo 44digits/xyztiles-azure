@@ -50,3 +50,4 @@ Note these instructions were created in linux.  (Todo: test in Powershell)
 
 Notes:
  - choose a distinct app name instead of `xyztiles-38296` - this must be unique across Azure
+ - sample tiff was derrived from Natural Earth 1:10m Natural Earth I raster data: https://www.naturalearthdata.com/downloads/10m-raster-data/10m-natural-earth-1/
