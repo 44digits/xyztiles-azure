@@ -2,8 +2,8 @@
 Azure function app to generate XYZ tiles from a GeoTiff
 
 Give a GeoTiff, uploaded as a Azure Storage blob this function generates XYZ tiles
-that can be used in a GIS application such as QGIS.  
-Note this app is bound to a HTTP event and therefore acts as a REST endpoint with query parameters.
+that can be used in a GIS application such as QGIS.
+Note this app is bound to an HTTP event and therefore acts as a REST endpoint with query parameters.
 
 ### Prerequisites
 - Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
